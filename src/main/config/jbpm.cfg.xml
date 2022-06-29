@@ -1,0 +1,8 @@
+<jbpm-configuration>
+
+  <<string name="resource.mail.templates" value="jbpm.mail.templates.xml"/>
+  <string name="jbpm.mail.from.address" value="sysgp.produsol@gmail.com" />
+  <string name="jbpm.mail.smtp.host" value="smtp.gmail.com" />
+  <string name="jbpm.mail.debug" value="true" />
+ 
+</jbpm-configuration>

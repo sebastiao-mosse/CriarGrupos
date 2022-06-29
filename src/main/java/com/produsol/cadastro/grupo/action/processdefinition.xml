@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition 
+  xmlns="urn:jbpm.org:jpdl-3.2"
+  name="simple">
+   <start-state name="start">
+		<transition to="Validar"></transition>
+	</start-state>
+   <task-node name="Validar">
+		<task name="Validar">
+			<assignment actor-id="okmAdmin"></assignment>
+		</task>
+		<transition to="end"></transition>
+	</task-node>
+
+
+	<end-state name="end"></end-state>
+</process-definition>
