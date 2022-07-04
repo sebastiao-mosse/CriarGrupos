@@ -1,280 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="CADASTRO DE COOPERADOS">
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="CADASTRO DE GRUPOS">
    <swimlane name="initiator"></swimlane>
 
 
 	<start-state name="start">
 		<task swimlane="initiator" name="InicioFluxo"></task>
-		<transition to="Tipo Cooperado">
-			<action name="Obter Dados" class="com.sample.action.ObterDadoSessaoActionHandler"></action>
-			<action name="Inicio da Duracao do processo na area comercial" class="com.sample.action.SaveDuracaoProcessoHandler"></action>
-		</transition>
+		<transition to="Formulario" name="form"></transition>
 	</start-state>
 
-	<task-node name="Validar Docs">
-		<task name="Cadastro de Cooperados - Aprovar Cooperado">
-			<assignment expression="group(ROLE_COMPLIANCE_OFFICER)"></assignment>
-		</task>
-		<transition to="Corrir Erros" name="Rejeitado(a)">
-			<action name="Imprimir Documentos" class="com.sample.action.ManipularFicheirosActionHandler"></action>
-			<action name="Rejeitar Cooperado" class="com.sample.action.RejeitarCooperado"></action>
-			<action name="Notificar a area Comercial" class="com.sample.action.NotificarAssistenteComercial"></action>
-		</transition>
-		<transition to="Verificacao" name="verificacao">
-			<action name="Inserir fase" class="com.openkm.fase.singular.FaseAprovarActionHandler"></action>
+
+	<task-node name="Formulario">
+		<task name="Cadastrar Grupo - Formulario" swimlane="initiator"></task>
+		<transition to="Pesquisar" name="pesquisar">
+			<action name="contador" class="com.produsol.cadastro.grupo.action.CountActionHandler"></action>
 		</transition>
 	</task-node>
 
-	<task-node name="Dados Profissionais">
-		<task name="Cadastro de Cooperados - Inserir Dados Profissionais" swimlane="initiator"></task>
-		<transition to="Decisao" name="decisao"></transition>
-		<transition to="Dados Pessoais" name="dados_profissionais"></transition>
+	<task-node name="Validar Grupo">
+		<transition to="end-state1" name="end"></transition>
 	</task-node>
 
-	<task-node name="Tipo Cooperado">
-		<task name="Cadastro de Cooperados - Selecionar Tipo de  Cooperado" swimlane="initiator"></task>
-		<transition to="Empresa ?">
-			<action name="Cadastrar Parceiros" class="com.sample.action.ParceirosActionHandler"></action>
-		</transition>
-		<transition to="end-state1" name="cancelar"></transition>
+	<task-node name="Pesquisar">
+		<task name="Cadastrar Grupo - Pesquisar" swimlane="initiator"></task>
+		<transition to="Listar" name="listar"></transition>
+		<transition to="Formulario" name="formulario"></transition>
 	</task-node>
 
-	<decision name="Empresa ?" expression='#{tipoCooperado.value=="EMPRESA" ? "Cadastrar Empresa" : "Pre-Cadastro"}'>
-		<transition to="Dados Pessoais" name="Pre-Cadastro"></transition>
-		<transition to="Cadastrar Empresa" name="Cadastrar Empresa"></transition>
-	</decision>
-
-	<task-node name="Cadastrar Empresa">
-		<task name="Cadastro de Cooperados - Cadastrar Empresa" swimlane="initiator"></task>
-		<transition to="Tipo Cooperado" name="empresa"></transition>
-		<transition to="Carregar Docs" name="CarregarDocumentos">
-			<action name="Definicao do directorio" class="com.sample.action.DefinicaoDirEmpresaActionHandler"></action>
-			<action name="INSERIR FASE" class="com.openkm.fase.empresa.FaseCadastroEmpresaActionHandler"></action>
-			<action name="Cadastrar Cliente" class="com.sample.action.SaveCooperadoEmpresaInDBActionHandler2"></action>
-			<action name="Inserir Processo" class="com.openkm.fase.singular.InserirProcessoActionHandler"></action>
-		</transition>
+	<task-node name="Listar">
+		<task name="Cadastrar Grupo - Listar Cooperados" swimlane="initiator"></task>
+		<transition to="Validar Grupo" name="validar"></transition>
 	</task-node>
 
-	<task-node name="Validar Empresa">
-		<task name="Cadastro de Cooperados - Aprovar Empresa">
-			<assignment expression="group(ROLE_COMPLIANCE_OFFICER)"></assignment>
-		</task>
-		<transition to="Suprir Insuficiencias" name="Rejeitado(a)">
-			<action name="Rejeitar Empresa" class="com.sample.action.RejeitarCooperado"></action>
-			<action name="Notificar Assistente Comercial" class="com.sample.action.NotificarAssistenteComercial"></action>
-		</transition>
-		<transition to="VerificarEmpresa" name="VerificarEmpresa">
-			<action name="Inserir Fase" class="com.openkm.fase.empresa.FaseAprovarEmpresaActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Carregar Documentos">
-		<task name="Cadastro de Cooperados - Carregar Documentos" swimlane="initiator"></task>
-		<transition to="Validar Docs" name="validar_docs">
-			<action name="Get Documents UUID" class="com.sample.action.GetDocumentosSingularActionHandler"></action>
-			<action name="Manipular Ficheiros" class="com.sample.action.ManipularFicheirosActionHandler"></action>
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action name="INSERIR FASE" class="com.openkm.fase.singular.FaseCarregarDocsActionHandler"></action>
-			<action name="Inserir Documentos no sistema" class="com.sample.action.InserirDocumentosSingularActionHandler"></action>
-			<action name="Comercial Update Tempo" class="com.sample.action.ComercialUpdateDuracaoProcessoHandler"></action>
-			<action name="Configurar Empresa" class="com.sample.action.SetEmpresa"></action>
-		</transition>
-		<transition to="Dados Profissionais" name="Pre-Cadastro"></transition>
-	</task-node>
-
-	<task-node name="Carregar Docs">
-		<task name="Cadastro de Cooperados - Carregar Documentos da Empresa" swimlane="initiator"></task>
-		<transition to="1º Participante" name="responsavel">
-			<action name="Get all document UUID" class="com.sample.action.GetDocumentosEmpresaActionHandler"></action>
-			<action name="Manipular Ficheiros Empresa" class="com.sample.action.ManipularFicheirosEmpresaActionHandler"></action>
-			<action name="INSERIR FASE" class="com.openkm.fase.empresa.FaseCarregarDocsEmpresaActionHandler"></action>
-			<action name="Insserir Documentos" class="com.sample.action.InserirDocumentosEmpresaActionHandler"></action>
-		</transition>
-		<transition to="Cadastrar Empresa" name="cadastrar_cooperado"></transition>
-	</task-node>
-
-	<task-node name="2º Participante">
-		<task name="Cadastro de Cooperados - Definir 2º Participante" swimlane="initiator"></task>
-		<transition to="Procurador ?">
-			<action name="Associar 2º Representante" class="com.sample.action.SaveSocio2ActionHandler"></action>
-			<action name="Fase2" class="com.openkm.fase.empresa.SegundoSocio"></action>
-		</transition>
-		<transition to="1º Participante" name="reject_participante2"></transition>
-	</task-node>
-
-	<task-node name="Procurador">
-		<task swimlane="initiator" name="Cadastro de Cooperados - Identificação do Procurador"></task>
-		<transition to="Beneficiários ?">
-			<action name="Associar Procurador" class="com.sample.action.SaveProcuradorActionHandler"></action>
-		</transition>
-		<transition to="2º Participante" name="reject_procurador"></transition>
-	</task-node>
-
-	<task-node name="1º Participante">
-		<task name="Cadastro de Cooperados - Definir 1º Participante" swimlane="initiator"></task>
-		<transition to="2º Socio?">
-			<action name="Fase" class="com.openkm.fase.empresa.PrimeiroSocio"></action>
-		</transition>
-		<transition to="Validar Empresa" name="ficha_inscricao1">
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action name="Manipular Ficheiros" class="com.sample.action.ManipularFicheirosEmpresaActionHandler"></action>
-			<action class="com.sample.action.GetDocumentosEmpresaActionHandler" name="Get Documentos UUID"></action>
-			<action name="FASE PRIMEIRO PARTICIPANTE" class="com.openkm.fase.empresa.PrimeiroSocio"></action>
-			<action name="Comercial Update Tempo" class="com.sample.action.ComercialUpdateDuracaoProcessoHandler"></action>
-			<action name="Sector Institucional" class="com.sample.action.SectorInstitucionalActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Beneficiários Efectivos">
-		<task name="Cadastro de Cooperados - Beneficiários efectivos" swimlane="initiator"></task>
-		<transition to="Validar Empresa">
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action name="Get Documents" class="com.sample.action.GetDocumentosEmpresaActionHandler"></action>
-			<action class="com.sample.action.ManipularFicheirosEmpresaActionHandler" name="Manipular Ficheiros"></action>
-			<action name="Comercial Update" class="com.sample.action.ComercialUpdateDuracaoProcessoHandler"></action>
-		</transition>
-		<transition to="Procurador" name="reject_beneficiario"></transition>
-	</task-node>
-
-	<decision name="2º Socio?" expression='#{socio_interveniente.value=="sim" ? "2º Participante" : "Validar Empresa"}'>
-		<transition to="2º Participante" name="2º Participante"></transition>
-		<transition to="Validar Empresa" name="Validar Empresa">
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action name="Manipular Ficheiros Empresa" class="com.sample.action.ManipularFicheirosEmpresaActionHandler"></action>
-			<action class="com.sample.action.GetDocumentosEmpresaActionHandler" name="Documentos da empresa"></action>
-			<action class="com.sample.action.ComercialUpdateDuracaoProcessoHandler" name="Comercial Update"></action>
-		</transition>
-	</decision>
-
-	<decision name="Beneficiários ?" expression='#{possuiBeneficiarios.value=="sim" ? "Beneficiários Efectivos" : "Validar Empresa"}'>
-		<transition to="Beneficiários Efectivos" name ="Beneficiários Efectivos"></transition>
-		<transition to="Validar Empresa" name="Validar Empresa">
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action class="com.sample.action.ManipularFicheirosEmpresaActionHandler" name="Manipular Ficheiros"></action>
-			<action name="Get Documents UUID" class="com.sample.action.GetDocumentosEmpresaActionHandler"></action>
-			<action class="com.sample.action.ComercialUpdateDuracaoProcessoHandler" name="Comercial Update"></action>
-		</transition>
-	</decision>
-
-	<decision name="Procurador ?" expression='#{possuiProcurador.value=="sim" ? "Procurador" : "Validar Empresa"}'>
-		<transition to="Procurador" name="Procurador"></transition>
-		<transition to="Validar Empresa" name="Validar Empresa">
-			<action name="Notificar Compliance" class="com.sample.action.NotificarCompliance"></action>
-			<action name="Get Documents" class="com.sample.action.GetDocumentosEmpresaActionHandler"></action>
-			<action name="Manipular Ficheiros Empresa" class="com.sample.action.ManipularFicheirosEmpresaActionHandler"></action>
-			<action name="Comercial Update" class="com.sample.action.ComercialUpdateDuracaoProcessoHandler"></action>
-		</transition>
-	</decision>
-
-	<decision name="Verificacao">
-		<handler class="com.sample.decision.CadastroSingularDecision"></handler>
-		<transition to="paginaErro" name="paginaErro">
-			<action name="Save Decision" class="com.sample.action.SaveDecisionActionHandler"></action>
-		</transition>
-		<transition to="Enviar Mensagem" name="Aprovado(a)">
-			<action class="com.sample.action.InformCooperadoAction" name="Activar e Informar Cooperado"></action>
-			<action name="Update Cooperado Singular" class="com.sample.action.UpdateCooperadoActionHandler"></action>
-			<action class="com.sample.action.ComplianceUpdateDuracaoProcessoHandler" name="Compliance update Duracao"></action>
-			<action name="Salvar Decisao" class="com.sample.action.SaveDecisionActionHandler"></action>
-		</transition>
-	</decision>
-
-	<task-node name="paginaErro">
-		<task name="Cadastro de Cooperados - Pagina de Erro">
-			<assignment expression="group(ROLE_COMPLIANCE_OFFICER)"></assignment>
-		</task>
-		<transition to="terminar" name="terminar"></transition>
-		<transition to="Dados Pessoais" name="editar_dados">
-			<action name="Delete all Existing files" class="com.sample.action.DocumentActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<decision name="VerificarEmpresa">
-		<handler class="com.sample.decision.CadastroEmpresaDecision"></handler>
-		<transition to="errorPage" name="erroEmpresa">
-			<action name="Salvar Decisao" class="com.sample.action.SaveDecisionActionHandler"></action>
-		</transition>
-		<transition to="Enviar Mensagem" name="Aprovado(a)">
-			<action name="Activar Cooperado" class="com.sample.action.InformCooperadoAction"></action>
-			<action name="Associar Representante da empresa" class="com.sample.action.SaveSocio1ActionHandler"></action>
-			<action name="Update Cooperado Empresa" class="com.sample.action.UpdateCooperadoActionHandler"></action>
-			<action name="Compliance Update" class="com.sample.action.ComplianceUpdateDuracaoProcessoHandler"></action>
-			<action name="SaveDecision" class="com.sample.action.SaveDecisionActionHandler"></action>
-		</transition>
-	</decision>
-
-	<task-node name="errorPage">
-		<task name="Cadastro de Cooperados - errorPage">
-			<assignment expression="group(ROLE_COMPLIANCE_OFFICER)"></assignment>
-		</task>
-		<transition to="end-state1" name="finalizar"></transition>
-		<transition to="Cadastrar Empresa" name="Cadastrar_Empresa"></transition>
-	</task-node>
-
-	<task-node name="Corrir Erros">
-		<task name="Cadastro de Cooperados - Correção de Insuficiencias" swimlane="initiator"></task>
-		<transition to="Validar Docs">
-			<action name="Manipular Ficheiros" class="com.sample.action.ManipularFicheirosActionHandler"></action>
-		</transition>
-		<transition to="Editar" name="ficha_singular">
-			<action name="Delete All Existing files" class="com.sample.action.DocumentActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Suprir Insuficiencias">
-		<task name="Cadastro de Cooperados - Suprir Insuficiencias no Processo" swimlane="initiator"></task>
-		<transition to="Edicao de Dados" name="ficha_empresa">
-			<action name="Eliminar Arquivos" class="com.sample.action.DocumentActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Editar">
-		<task name="Cadastro de Cooperados - Editar Dados do Cooperado" swimlane="initiator"></task>
-		<transition to="Carregar Documentos" name="ficha_singular">
-			<action name="Editar Singular" class="com.openkm.fase.singular.EditarSingular"></action>
-			<action name="Definicao dos directorios" class="com.sample.action.DefinicaoDirectoriosActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Edicao de Dados">
-		<task name="Cadastro de Cooperados - Editar Dados da Empresa" swimlane="initiator"></task>
-		<transition to="Carregar Docs" name="ficha_empresa">
-			<action name="Editar Empresa" class="com.openkm.fase.empresa.EditarEmpresa"></action>
-			<action name="Definicao dos directorios da empresa" class="com.sample.action.DefinicaoDirEmpresaActionHandler"></action>
-		</transition>
-	</task-node>
-
-	<task-node name="Inserir Empresa">
-		<task name="Cadastro de Cooperados - Inserir Empresa" swimlane="initiator"></task>
-		<transition to="Carregar Documentos" name="carregar_docs">
-			<action name="Directorio dos Arquivos" class="com.sample.action.DefinicaoDirectoriosActionHandler"></action>
-			<action name="CADASTRAR CLIENTE NA BD" class="com.sample.action.SaveCooperadoSingularInDBActionHandler"></action>
-			<action name="INSERIR FASE" class="com.openkm.fase.singular.FaseCadastroActionHandler"></action>
-			<action class="com.openkm.fase.singular.InserirProcessoActionHandler" name="CADASTRAR PROCESSO"></action>
-		</transition>
-		<transition to="Dados Profissionais" name="dados_profissionais"></transition>
-	</task-node>
-
-	<decision name="Decisao">
-		<handler class="com.sample.decision.EntidadesDecision"></handler>
-		<transition to="Inserir Empresa" name="inserir_empresa"></transition>
-		<transition to="Carregar Documentos" name="load_docs">
-			<action name="Criar directorio dos documentos" class="com.sample.action.DefinicaoDirectoriosActionHandler"></action>
-			<action name="cadastrar clientes" class="com.sample.action.SaveCooperadoSingularInDBActionHandler"></action>
-			<action name="inserir fase" class="com.openkm.fase.singular.FaseCadastroActionHandler"></action>
-			<action name="Inserir processo" class="com.openkm.fase.singular.InserirProcessoActionHandler"></action>
-		</transition>
-	</decision>
-
-	<task-node name="Dados Pessoais">
-		<task name="Cadastro de Cooperados - Inserir Dados Pessoais" swimlane="initiator"></task>
-		<transition to="Dados Profissionais" name="dados_profissionais"></transition>
-		<transition to="Tipo Cooperado" name="singular"></transition>
-	</task-node>
-	<end-state name="Enviar Mensagem"></end-state>
 
 	<end-state name="end-state1"></end-state>
-
-	<end-state name="terminar"></end-state>
 </process-definition>

@@ -1,222 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="CADASTRO DE COOPERADOS" width="1667" height="937">
-  <node name="start" x="-170" y="-221" width="119" height="52">
+<root-container name="CADASTRO DE GRUPOS" width="1430" height="418">
+  <node name="start" x="36" y="53" width="119" height="52">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Validar Docs" x="1091" y="-58" width="148" height="44">
+  <node name="Formulario" x="95" y="203" width="136" height="54">
     <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
+      <label x="-7" y="-20"/>
+      <bendpoint w1="46" h1="-160" w2="-148" h2="-3"/>
     </edge>
   </node>
-  <node name="Dados Profissionais" x="473" y="47" width="168" height="51">
-    <edge>
-      <label x="4" y="-32"/>
-    </edge>
-    <edge>
-      <label x="-65" y="-14"/>
-      <bendpoint w1="137" h1="38" w2="171" h2="-54"/>
-    </edge>
-  </node>
-  <node name="Tipo Cooperado" x="122" y="-254" width="154" height="46">
-    <edge>
-      <label x="-26" y="-24"/>
-    </edge>
+  <node name="Validar Grupo" x="762" y="150" width="132" height="55">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Empresa ?" x="132" y="17" width="132" height="53">
-    <edge>
-      <label x="-53" y="-24"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="Cadastrar Empresa" x="-117" y="-63" width="185" height="45">
-    <edge>
-      <label x="-13" y="54"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-176" h1="159" w2="-59" h2="-121"/>
-    </edge>
-  </node>
-  <node name="Validar Empresa" x="557" y="240" width="145" height="52">
-    <edge>
-      <label x="-40" y="-22"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="Carregar Documentos" x="740" y="-49" width="183" height="55">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-76" y="-10"/>
-      <bendpoint w1="-148" h1="17" w2="93" h2="-148"/>
-    </edge>
-  </node>
-  <node name="Carregar Docs" x="-99" y="205" width="157" height="51">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-15" y="-6"/>
-    </edge>
-  </node>
-  <node name="2º Participante" x="313" y="481" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-74" y="-6"/>
-    </edge>
-  </node>
-  <node name="Procurador" x="879" y="523" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-82" y="2"/>
-    </edge>
-  </node>
-  <node name="1º Participante" x="-76" y="364" width="182" height="47">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-115" y="-5"/>
-    </edge>
-  </node>
-  <node name="Beneficiários Efectivos" x="834" y="296" width="206" height="50">
+  <node name="Pesquisar" x="295" y="47" width="124" height="53">
     <edge>
       <label x="5" y="-10"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="176" h1="-1" w2="167" h2="-327"/>
-      <bendpoint w1="175" h1="220" w2="167" h2="0"/>
     </edge>
   </node>
-  <node name="2º Socio?" x="432" y="386" width="151" height="49">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-41" y="-23"/>
-    </edge>
-  </node>
-  <node name="Beneficiários ?" x="878" y="429" width="132" height="52">
-    <edge>
-      <label x="-45" y="-15"/>
-    </edge>
+  <node name="end-state1" x="723" y="279" width="132" height="44"/>
+  <node name="Listar" x="473" y="189" width="120" height="47">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Procurador ?" x="661" y="441" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-75" y="-25"/>
-    </edge>
-  </node>
-  <node name="Verificacao" x="1083" y="55" width="132" height="51">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="21" y="-17"/>
-    </edge>
-  </node>
-  <node name="paginaErro" x="850" y="52" width="147" height="45">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-35" y="-27"/>
-      <bendpoint w1="-148" h1="73" w2="244" h2="-45"/>
-    </edge>
-  </node>
-  <node name="VerificarEmpresa" x="1057" y="216" width="132" height="53">
-    <edge>
-      <label x="-63" y="-9"/>
-      <bendpoint w1="292" h1="-413" w2="712" h2="179"/>
-    </edge>
-    <edge>
-      <label x="-90" y="17"/>
-    </edge>
-  </node>
-  <node name="errorPage" x="637" y="-376" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-616" h1="76" w2="1" h2="-282"/>
-    </edge>
-  </node>
-  <node name="Corrir Erros" x="866" y="-168" width="132" height="46">
-    <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="204" h1="4" w2="-29" h2="-105"/>
-    </edge>
-    <edge>
-      <label x="-31" y="-18"/>
-    </edge>
-  </node>
-  <node name="Suprir Insuficiencias" x="152" y="241" width="180" height="57">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="Editar" x="633" y="-205" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="Edicao de Dados" x="196" y="135" width="169" height="52">
-    <edge>
-      <label x="-41" y="-40"/>
-    </edge>
-  </node>
-  <node name="Inserir Empresa" x="288" y="-207" width="152" height="46">
-    <edge>
-      <label x="-64" y="-11"/>
-      <bendpoint w1="199" h1="22" w2="-268" h2="-140"/>
-    </edge>
-    <edge>
-      <label x="-68" y="-26"/>
-      <bendpoint w1="34" h1="126" w2="-133" h2="-98"/>
-    </edge>
-  </node>
-  <node name="Decisao" x="467" y="-113" width="132" height="50">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-41" y="-17"/>
-    </edge>
-  </node>
-  <node name="Dados Pessoais" x="460" y="167" width="142" height="51">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-4" y="-17"/>
-    </edge>
-  </node>
-  <node name="Enviar Mensagem" x="1305" y="278" width="160" height="48"/>
-  <node name="end-state1" x="961" y="-234" width="132" height="44"/>
-  <node name="terminar" x="828" y="159" width="132" height="46"/>
 </root-container>
